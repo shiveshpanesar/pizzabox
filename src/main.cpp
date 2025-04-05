@@ -37,7 +37,12 @@ uint64_t btn2LastPressedTime;
 uint8_t currentState = 0;
 uint8_t lastState = 0;
 const uint8_t buttonPins[12] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 16, 14, 15};
-const uint8_t stateMidiStart[5] = {60, 72, 84, 96, 108};
+const uint8_t note_1[12] = {60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71};             // C4–B4
+const uint8_t note_2[12] = {72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83};             // C5–B5
+const uint8_t note_3[12] = {84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95};             // C6–B6
+const uint8_t note_4[12] = {96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107};     // C7–B7
+const uint8_t note_5[12] = {108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119}; // C8–B8
+const uint8_t *notes[] = {note_1, note_2, note_3, note_4, note_5};
 bool buttonStates[12];
 const uint8_t button1 = A0;
 const uint8_t button2 = A1;
@@ -75,13 +80,13 @@ void updatePermanentMidiNotes()
         if (!digitalRead(buttonPins[i]) && buttonStates[i] == false)
         {
             buttonStates[i] = true;
-            noteOn(1, stateMidiStart[currentState] + i, 127);
+            noteOn(1, notes[currentState][i], 127);
             delay(50);
         }
         if (digitalRead(buttonPins[i]) && buttonStates[i] == true)
         {
             buttonStates[i] = false;
-            noteOff(1, stateMidiStart[currentState] + i, 0);
+            noteOff(1, notes[currentState][i], 0);
             delay(50);
         }
     }
